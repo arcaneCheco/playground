@@ -1,1 +1,1 @@
-# Background using ThreeJs and WebGl
+# Personal Playground for threejs and webgl related things
