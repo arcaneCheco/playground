@@ -103,7 +103,7 @@ export default class Renderer {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBFormat,
-        // encoding: THREE.sRGBEncoding,
+        encoding: THREE.sRGBEncoding,
       }
     );
     this.postProcess.composer = new EffectComposer(

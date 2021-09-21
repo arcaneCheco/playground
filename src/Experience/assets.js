@@ -20,6 +20,16 @@ export default [
         source: "/assets/owl.png",
         type: "texture",
       },
+      {
+        name: "portal",
+        source: "/assets/portal/portal.glb",
+        type: "model",
+      },
+      {
+        name: "uvTexture",
+        source: "/assets/portal/baked.jpg",
+        type: "texture",
+      },
     ],
   },
 ];

@@ -5,6 +5,9 @@ import Particles from "./Particles.js";
 import Vignette from "./Vignette.js";
 import Ripple from "./Ripple.js";
 import ExplodingParticles from "./explodingParticles.js";
+import ThreeJourney35 from "./threeJourney35.js";
+import Godray from "./Godray.js";
+import Spikes from "./Spikes.js";
 import * as THREE from "three";
 
 export default class World {
@@ -16,13 +19,11 @@ export default class World {
 
     this.resources.on("groupEnd", (_group) => {
       if (_group.name === "base") {
-        // this.setGradient();
-        // this.setSmoke();
-        // this.setVignette();
-        // this.setParticles();
-        // this.setRipple();
-        this.setExplodingParticles();
         // this.setDummy();
+        this.setThreeJourney35();
+        // this.setGodray();
+        // this.setSpikes();
+        this.setVignette();
       }
     });
   }
@@ -63,6 +64,18 @@ export default class World {
     this.explodingParticles = new ExplodingParticles();
   }
 
+  setThreeJourney35() {
+    this.threeJourney35 = new ThreeJourney35();
+  }
+
+  setGodray() {
+    this.godray = new Godray();
+  }
+
+  setSpikes() {
+    this.spikes = new Spikes();
+  }
+
   resize() {
     if (this.smoke) {
       this.smoke.resize();
@@ -84,6 +97,12 @@ export default class World {
     }
     if (this.explodingParticles) {
       this.explodingParticles.update();
+    }
+    if (this.threeJourney35) {
+      this.threeJourney35.update();
+    }
+    if (this.spikes) {
+      this.spikes.update();
     }
   }
 
