@@ -30,6 +30,11 @@ export default [
         source: "/assets/portal/baked.jpg",
         type: "texture",
       },
+      {
+        name: "matcap1",
+        source: "/assets/matcap1.png",
+        type: "texture",
+      },
     ],
   },
 ];
