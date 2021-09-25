@@ -20,8 +20,6 @@ vec3 rotateY(vec3 v, float angle) {
 }
 
 void main() {
-
-    // gl_Position = vec4(position, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     vUv = uv;
     vNormal = normal;

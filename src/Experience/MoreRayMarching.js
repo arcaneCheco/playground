@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import Experience from "./Experience";
-import vertexShader from "./shaders/simpleRaymarching/vertex.glsl";
-import fragmentShader from "./shaders/simpleRaymarching/fragment.glsl";
+import vertexShader from "./shaders/moreRaymarching/vertex.glsl";
+import fragmentShader from "./shaders/moreRaymarching/fragment.glsl";
 
-export default class SimpleRaymarching {
+export default class MoreRaymarching {
   constructor() {
     this.experience = new Experience();
     this.resources = this.experience.resources;
@@ -16,7 +16,6 @@ export default class SimpleRaymarching {
     this.setGeometry();
     this.setMaterial();
     this.setMesh();
-    this.setMouse();
   }
 
   setGeometry() {
@@ -27,28 +26,22 @@ export default class SimpleRaymarching {
       side: THREE.DoubleSide,
       vertexShader,
       fragmentShader,
-      uniforms: {
-        uTime: { value: 0 },
-        uMatcap: { value: this.resources.items.matcap1 },
-        uMouse: { value: new THREE.Vector2(0, 0) },
-      },
+      //   uniforms: {
+      //     uTime: { value: 0 },
+      //     uMatcap: { value: this.resources.items.matcap1 },
+      //     uMouse: { value: new THREE.Vector2(0, 0) },
+      //   },
     });
   }
   setMesh() {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.scene.add(this.mesh);
   }
-  setMouse() {
-    this.mouse = new THREE.Vector2();
-    window.addEventListener("mousemove", (e) => {
-      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    });
-  }
+
   update() {
-    if (this.material) {
-      this.material.uniforms.uTime.value = this.time.elapsed * 0.001;
-      this.material.uniforms.uMouse.value = this.mouse;
-    }
+    // if (this.material) {
+    //   this.material.uniforms.uTime.value = this.time.elapsed * 0.001;
+    //   this.material.uniforms.uMouse.value = this.mouse;
+    // }
   }
 }

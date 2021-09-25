@@ -9,6 +9,7 @@ import ThreeJourney35 from "./threeJourney35.js";
 import Godray from "./Godray.js";
 import Spikes from "./Spikes.js";
 import SimpleRaymarching from "./SimpleRaymarching.js";
+import MoreRaymarching from "./MoreRayMarching.js";
 import * as THREE from "three";
 
 export default class World {
@@ -24,7 +25,8 @@ export default class World {
         // this.setThreeJourney35();
         // this.setGodray();
         // this.setSpikes();
-        this.setSimpleRaymarching();
+        // this.setSimpleRaymarching();
+        this.setMoreRaymarching();
         // this.setVignette();
       }
     });
@@ -80,6 +82,9 @@ export default class World {
 
   setSimpleRaymarching() {
     this.simpleRaymarching = new SimpleRaymarching();
+  }
+  setMoreRaymarching() {
+    this.moreRaymarching = new MoreRaymarching();
   }
 
   resize() {

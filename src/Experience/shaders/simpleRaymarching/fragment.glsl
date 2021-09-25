@@ -1,5 +1,6 @@
 uniform float uTime;
 uniform sampler2D uMatcap;
+uniform vec2 uMouse;
 varying vec2 vUv;
 varying vec3 vNormal;
 
@@ -38,6 +39,28 @@ float sdBox( vec3 p, vec3 b )
   return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
 }
 
+float sdOctahedron( vec3 p, float s)
+{
+  p = abs(p);
+  return (p.x+p.y+p.z-s)*0.57735027;
+}
+
+float sdTorus( vec3 p, vec2 t )
+{
+  vec2 q = vec2(length(p.xz)-t.x,p.y);
+  return length(q)-t.y;
+}
+
+float sdBoxFrame( vec3 p, vec3 b, float e )
+{
+  p = abs(p  )-b;
+  vec3 q = abs(p+e)-e;
+  return min(min(
+      length(max(vec3(p.x,q.y,q.z),0.0))+min(max(p.x,max(q.y,q.z)),0.0),
+      length(max(vec3(q.x,p.y,q.z),0.0))+min(max(q.x,max(p.y,q.z)),0.0)),
+      length(max(vec3(q.x,q.y,p.z),0.0))+min(max(q.x,max(q.y,p.z)),0.0));
+}
+
 // polynomial smooth min (k = 0.1); from https://www.iquilezles.org/www/articles/smin/smin.htm
 float smin( float a, float b, float k )
 {
@@ -45,14 +68,37 @@ float smin( float a, float b, float k )
     return mix( b, a, h ) - k*h*(1.0-h);
 }
 
+// exponential smooth min (k = 32);
+float sminExp( float a, float b, float k )
+{
+    float res = exp2( -k*a ) + exp2( -k*b );
+    return -log2( res )/k;
+}
+
 float sdf(vec3 p) { // signed-distance-function
-    vec3 p1 = rotate(p, vec3(1.), uTime/5.);
+    vec3 p1 = rotate(p, vec3(1.), uTime/2.);
     float box = sdBox(p1, vec3(0.3));
     float sphere = sdSphere(p, 0.4);
+    float octahedron = sdOctahedron(p1, 0.4);
+    float torus = sdTorus(p1, vec2(0.4, 0.1));
+    float boxFrame = sdBoxFrame(p1, vec3(0.3), 0.01);
+    float interactiveSphere = sdSphere(p - vec3(uMouse, 0.), 0.2);
     // return box;
     // return sphere;
     // return min(box, sphere);
-    return smin(box, sphere, 0.5);
+    // return smin(box, sphere, 0.5);
+    // return sminExp(box, interactiveSphere, 0.5);
+    // return smin(box, interactiveSphere, 0.5);
+    // return smin(octahedron, interactiveSphere, 0.8);
+    // return smin(torus, interactiveSphere, 0.8);
+    // return smin(boxFrame, interactiveSphere, 0.8);
+
+    // create animation
+    float progress = fract(uTime / 3.);
+    float progSphere = sdSphere(p + vec3(1.) * progress, 0.1);
+    float anim = smin(box, progSphere, 0.2);
+
+    return smin(anim, interactiveSphere, 0.5);
 
 }
 
@@ -68,6 +114,12 @@ vec3 calcNormal( in vec3 p )
 
 
 void main() {
+
+    // background
+    float dist = distance(vUv, vec2(0.5));
+    vec3 bg = mix(vec3(0.), vec3(0.3), dist);
+
+
     vec3 cameraPos = vec3(0.,0.,2.);
     vec3 ray = normalize(vec3(vUv - vec2(0.5), -1)); // z should be negative because camera is in front
     vec3 rayPos = cameraPos;
@@ -80,7 +132,8 @@ void main() {
         stepSize += distanceToObject;
     }
 
-    vec3 color = vec3(0.);
+    vec3 color = bg;
+    float fresnel = 0.;
 
     if(stepSize<maxDistance) { // condtion to check if ray hit something
         vec3 pos = cameraPos + stepSize * ray;
@@ -99,7 +152,15 @@ void main() {
         // matcap
         vec2 matcapUv = getMatcap(ray, posNormal);
         color = texture2D(uMatcap, matcapUv).rbg;
+
+        // mixed
+        // color = mix(color, posNormal, 0.5);
+
+        fresnel = pow(1. + dot(ray, posNormal), 3.);
+
+        color = mix(color, bg, fresnel);
     }
 
-    gl_FragColor = vec4(color, .1);
+    gl_FragColor = vec4(color, 1.);
+    // gl_FragColor = vec4(fresnel);
 }
