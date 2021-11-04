@@ -26,6 +26,16 @@ export default [
         type: "model",
       },
       {
+        name: "dna",
+        source: "/assets/dna.glb",
+        type: "model",
+      },
+      {
+        name: "dna2",
+        source: "/assets/dna2.gltf",
+        type: "model",
+      },
+      {
         name: "uvTexture",
         source: "/assets/portal/baked.jpg",
         type: "texture",
@@ -33,6 +43,11 @@ export default [
       {
         name: "matcap1",
         source: "/assets/matcap1.png",
+        type: "texture",
+      },
+      {
+        name: "manifoldFontTexture",
+        source: "/assets/fonts/manifold/manifold.png",
         type: "texture",
       },
     ],

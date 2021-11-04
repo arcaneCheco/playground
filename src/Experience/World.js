@@ -10,6 +10,12 @@ import Godray from "./Godray.js";
 import Spikes from "./Spikes.js";
 import SimpleRaymarching from "./SimpleRaymarching.js";
 import MoreRaymarching from "./MoreRayMarching.js";
+import InigoMonster from "./InigoMonster.js";
+import Gears from "./Gears.js";
+import TextRay from "./TextRay.js";
+import ParticleAnimation from "./ParticleAnimation.js";
+import ThreeBP from "./3bp.js";
+import Play from "./Play8.js";
 import * as THREE from "three";
 
 export default class World {
@@ -26,7 +32,15 @@ export default class World {
         // this.setGodray();
         // this.setSpikes();
         // this.setSimpleRaymarching();
-        this.setMoreRaymarching();
+        // this.setMoreRaymarching();
+        // this.setInigoMonster();
+        // this.setTextRay();
+        // this.setParticleAnimation();
+        // this.setPlay3();
+        this.setPlay();
+        // this.setThreeBP();
+        // this.setExplodingParticles();
+        // this.setGears();
         // this.setVignette();
       }
     });
@@ -86,12 +100,26 @@ export default class World {
   setMoreRaymarching() {
     this.moreRaymarching = new MoreRaymarching();
   }
-
-  resize() {
-    if (this.smoke) {
-      this.smoke.resize();
-    }
+  setInigoMonster() {
+    this.inigoMonster = new InigoMonster();
   }
+  setGears() {
+    this.gears = new Gears();
+  }
+  setTextRay() {
+    this.textRay = new TextRay();
+  }
+  setParticleAnimation() {
+    this.particleAnimation = new ParticleAnimation();
+  }
+  setThreeBP() {
+    this.threeBP = new ThreeBP();
+  }
+  setPlay() {
+    this.play = new Play();
+  }
+
+  resize() {}
 
   update() {
     if (this.gradient) {
@@ -100,23 +128,8 @@ export default class World {
     if (this.smoke) {
       this.smoke.update();
     }
-    if (this.particles) {
-      this.particles.update();
-    }
-    if (this.ripple) {
-      this.ripple.update();
-    }
-    if (this.explodingParticles) {
-      this.explodingParticles.update();
-    }
-    if (this.threeJourney35) {
-      this.threeJourney35.update();
-    }
-    if (this.spikes) {
-      this.spikes.update();
-    }
-    if (this.simpleRaymarching) {
-      this.simpleRaymarching.update();
+    if (this.play) {
+      this.play.update();
     }
   }
 
